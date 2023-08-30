@@ -20,10 +20,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "이름이 없으면 시작할 수 없어", Toast.LENGTH_LONG).show()
             }
             else{
-                val intent = Intent(this, QuizeQeustionsActivity :: class.java)
+                val intent = Intent(this, QuizQuestionsActivity::class.java)
                 startActivity(intent)
             }
         }
 
     }
 }
+
