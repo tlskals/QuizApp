@@ -1,5 +1,6 @@
 package com.example.quizapp
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
@@ -16,6 +18,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mCurrentPosition: Int = 1
     private var mQuestionsList:ArrayList<Question>? = null
     private var mSelectedOptionPosition :Int = 0
+    private var mUserName: String? =null
+    private var mCorrectAnswer: Int = 0
 
     private var progressBar: ProgressBar? = null
     private var tvProgress : TextView? = null
@@ -31,6 +35,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quize_qeustions)
+
+        mUserName = intent.getStringExtra(Constants.USER_NAME)
 
         progressBar = findViewById(R.id.progressBar)
         tvProgress = findViewById(R.id.tv_progress)
@@ -56,11 +62,12 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setQuestion() {
+        defaultOptionsView()
 
-        val question: Question = mQuestionsList!![mCurrentPosition]
+        val question: Question = mQuestionsList!![mCurrentPosition-1]
         ivImage?.setImageResource(question.image)
-        progressBar?.progress = mCurrentPosition
-        tvProgress?.text = "$mCurrentPosition/${progressBar?.max}"
+        progressBar?.progress = mCurrentPosition-1
+        tvProgress?.text = "$mCurrentPosition/${progressBar?.max?.plus(1)}"
         tvQuestion?.text = question.question
         tvOptionOne?.text = question.optionOne
         tvOptionTwo?.text = question.optionTwo
@@ -68,10 +75,10 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvOptionFour?.text = question.optionFour
 
         if(mCurrentPosition == mQuestionsList!!.size) {
-            btnSubmit?.text = "끝났습니당~~"
+            btnSubmit?.text = "과연 정답은~?"
         }
         else {
-            btnSubmit?.text = "다음 질문!!"
+            btnSubmit?.text = "과연 정답은~?"
         }
     }
 
@@ -139,8 +146,71 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btn_submit ->{
-                //
+                if (mSelectedOptionPosition == 0) {
+                    mCurrentPosition++
+
+                    when {
+                        mCurrentPosition <= mQuestionsList!!.size -> {
+                            setQuestion()
+                        }
+                        else -> {
+                            val intent = Intent(this, ResultActivity::class.java)
+                            intent.putExtra(Constants.USER_NAME, mUserName)
+                            intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswer)
+                            intent.putExtra(Constants.TOTAL_QUESTIONS, mQuestionsList?.size)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+                }
+                else{
+                    val question = mQuestionsList?.get(mCurrentPosition-1)
+                    if (question!!.correctAnswer != mSelectedOptionPosition) {
+                        answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
+                    }else{
+                        mCorrectAnswer++
+                    }
+                    answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
+
+                    if (mCurrentPosition == mQuestionsList!!.size) {
+                        btnSubmit?.text = "끝났습니당!!"
+                    }else {
+                        btnSubmit?.text = "다음 질문이야!!"
+                    }
+                    mSelectedOptionPosition = 0
+                }
+
             }
         }
     }
+
+    private fun answerView(answer: Int, drawableView : Int) {
+        when(answer) {
+            1-> {
+                tvOptionOne?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+            }
+            2-> {
+                tvOptionTwo?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+            }
+            3-> {
+                tvOptionThree?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+            }
+            4-> {
+                tvOptionFour?.background = ContextCompat.getDrawable(
+                    this,
+                    drawableView
+                )
+            }
+        }
+    }
+
 }

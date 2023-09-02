@@ -2,10 +2,14 @@ package com.example.quizapp
 
 object Constants {
 
-    fun getQuestions():ArrayList<Question> {
+    const val USER_NAME: String = "user_name"
+    const val TOTAL_QUESTIONS: String = "total_questions"
+    const val CORRECT_ANSWERS: String = "correct_answers"
+
+    fun getQuestions(): ArrayList<Question> {
         val questionsList = ArrayList<Question>()
 
-        val que1 = Question (
+        val que1 = Question(
             //1
             1,
             "나는 언제 우리집에 왔게?",
@@ -18,7 +22,7 @@ object Constants {
         )
         questionsList.add(que1)
 
-        val que2 = Question (
+        val que2 = Question(
             //1
             2,
             "나는 왜 이러고 있었을까?",
@@ -31,7 +35,7 @@ object Constants {
         )
         questionsList.add(que2)
 
-        val que3 = Question (
+        val que3 = Question(
             //1
             3,
             "내가 지금 무슨 꿈을 꾸게~?",
@@ -44,7 +48,7 @@ object Constants {
         )
         questionsList.add(que3)
 
-        val que4 = Question (
+        val que4 = Question(
             //1
             4,
             "내가 여기에 실례하고 작은 형이 나한테 한 행동은?",
@@ -57,7 +61,7 @@ object Constants {
         )
         questionsList.add(que4)
 
-        val que5 = Question (
+        val que5 = Question(
             //1
             5,
             "나는 주로 이런 행동을 싫어해",
@@ -70,7 +74,7 @@ object Constants {
         )
         questionsList.add(que5)
 
-        val que6 = Question (
+        val que6 = Question(
             //1
             6,
             "내가 왜 이런 모습으로 앉아있는지 알아?",
@@ -83,7 +87,7 @@ object Constants {
         )
         questionsList.add(que6)
 
-        val que7 = Question (
+        val que7 = Question(
             //1
             7,
             "내가 우리 가족 중 누구를 제일 좋아하게?",
@@ -96,7 +100,7 @@ object Constants {
         )
         questionsList.add(que7)
 
-        val que8 = Question (
+        val que8 = Question(
             //1
             8,
             "내가 제일 좋아하는 것은?",
